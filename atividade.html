@@ -1,0 +1,412 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>CRUD de Produtos - Estilo iOS</title>
+<style>
+    :root {
+        --mint-green: #bee9e8ff;
+        --moonstone: #62b6cbff;
+        --indigo-dye: #1b4965ff;
+        --columbia-blue: #cae9ffff;
+        --picton-blue: #5fa8d3ff;
+        --ios-gray: #f2f2f7;
+        --ios-blue: #007aff;
+        --ios-red: #ff3b30;
+        --ios-light-gray: #d1d1d6;
+    }
+
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body, html {
+        height: 100%;
+        background-color: var(--ios-gray);
+        display: flex;
+        justify-content: center;
+        align-items: flex-start;
+        font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen,
+            Ubuntu, Cantarell, "Open Sans", "Helvetica Neue", sans-serif;
+        color: var(--indigo-dye);
+        padding: 40px 20px;
+    }
+
+    .container, #product-details {
+        background-color: white;
+        padding: 30px 40px;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+        max-width: 700px;
+        width: 100%;
+        margin: 0 auto;
+        box-sizing: border-box;
+    }
+
+    h1, h2 {
+        text-align: center;
+        color: var(--indigo-dye);
+        font-weight: 600;
+        margin-bottom: 25px;
+    }
+
+    form input, form select {
+        width: 100%;
+        padding: 14px 16px;
+        margin: 12px 0;
+        border: 1px solid var(--ios-light-gray);
+        border-radius: 12px;
+        font-size: 17px;
+        background-color: var(--ios-gray);
+        color: var(--indigo-dye);
+        transition: border-color 0.3s;
+        font-weight: 400;
+    }
+
+    form input::placeholder,
+    form select option:disabled {
+        color: #999;
+        font-weight: 300;
+    }
+
+    form input:focus, form select:focus {
+        border-color: var(--ios-blue);
+        outline: none;
+        background-color: white;
+        box-shadow: 0 0 5px var(--ios-blue);
+    }
+
+    form button {
+        background-color: var(--ios-blue);
+        color: white;
+        padding: 16px;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        width: 100%;
+        font-size: 18px;
+        font-weight: 600;
+        margin-top: 15px;
+        transition: background-color 0.25s ease;
+        user-select: none;
+        -webkit-tap-highlight-color: transparent;
+    }
+
+    form button:active {
+        background-color: #005ecb;
+    }
+
+    form button:hover {
+        background-color: #1a85ff;
+    }
+
+    table {
+        width: 100%;
+        margin-top: 35px;
+        border-collapse: separate;
+        border-spacing: 0 12px;
+        font-size: 17px;
+        color: var(--indigo-dye);
+    }
+
+    table thead tr th {
+        text-align: left;
+        padding-left: 15px;
+        font-weight: 600;
+        font-size: 15px;
+        color: #666;
+        border-bottom: none;
+    }
+
+    table tbody tr {
+        background-color: var(--ios-gray);
+        border-radius: 16px;
+        box-shadow: 0 2px 6px rgba(0,0,0,0.07);
+        transition: background-color 0.25s;
+    }
+
+    table tbody tr:hover {
+        background-color: white;
+    }
+
+    table tbody tr td {
+        padding: 14px 20px;
+        vertical-align: middle;
+        text-align: left;
+        font-weight: 400;
+        border: none;
+    }
+
+    a {
+        cursor: pointer;
+        color: var(--ios-blue);
+        text-decoration: none;
+        font-weight: 600;
+        transition: color 0.3s;
+    }
+
+    a:hover {
+        color: #005ecb;
+        text-decoration: underline;
+    }
+
+    button.action-btn {
+        background-color: var(--ios-red);
+        color: white;
+        border: none;
+        border-radius: 14px;
+        cursor: pointer;
+        margin: 5px;
+        padding: 8px 14px;
+        font-size: 14px;
+        font-weight: 600;
+        user-select: none;
+        transition: background-color 0.25s;
+    }
+
+    button.action-btn.edit {
+        background-color: var(--ios-blue);
+    }
+
+    button.action-btn:active {
+        opacity: 0.75;
+    }
+
+    button.action-btn:hover {
+        filter: brightness(1.1);
+    }
+
+    #product-details {
+        margin-top: 30px;
+        color: var(--indigo-dye);
+        display: none;
+    }
+
+    #product-details p {
+        margin: 14px 0;
+        font-weight: 500;
+    }
+
+    #product-details button {
+        background-color: var(--ios-red);
+        padding: 14px 28px;
+        margin-top: 20px;
+        color: white;
+        border: none;
+        border-radius: 16px;
+        cursor: pointer;
+        font-weight: 600;
+        font-size: 16px;
+        user-select: none;
+        transition: background-color 0.25s;
+    }
+
+    #product-details button:hover {
+        background-color: #cc3328;
+    }
+
+    #filter-buttons {
+        margin-top: 20px;
+        text-align: center;
+    }
+
+    #filter-buttons button {
+        background-color: var(--ios-blue);
+        color: white;
+        border: none;
+        border-radius: 16px;
+        padding: 12px 20px;
+        margin: 6px 8px;
+        cursor: pointer;
+        font-size: 16px;
+        font-weight: 600;
+        user-select: none;
+        transition: background-color 0.25s ease;
+    }
+
+    #filter-buttons button:hover {
+        background-color: #005ecb;
+    }
+
+    #filter-buttons button:active {
+        background-color: #004a99;
+    }
+</style>
+</head>
+<body>
+    <div class="container">
+        <h1>Gestão de Produtos</h1>
+        <form id="product-form">
+            <input type="text" id="name" placeholder="Nome do produto" required />
+            <input type="number" id="price" placeholder="Preço" required min="0" step="0.01" />
+            <select id="category" required>
+                <option value="" disabled selected>Categoria</option>
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+            </select>
+            <input type="text" id="origin" placeholder="Origem" required />
+            <input type="text" id="batch" placeholder="Lote" required />
+            <input type="date" id="expiry" placeholder="Data de validade" required />
+            <button type="submit">Adicionar Produto</button>
+        </form>
+
+        <h2>Lista de Produtos</h2>
+        <table id="product-list">
+            <thead>
+                <tr>
+                    <th>Nome</th>
+                    <th>Preço (R$)</th>
+                    <th>Categoria</th>
+                    <th>Origem</th>
+                    <th>Lote</th>
+                    <th>Data de Validade</th>
+                    <th>Ações</th>
+                </tr>
+            </thead>
+            <tbody>
+                <!-- Produtos adicionados aparecem aqui -->
+            </tbody>
+        </table>
+
+        <div id="filter-buttons">
+            <button onclick="filterByCategory('1')">Categoria 1</button>
+            <button onclick="filterByCategory('2')">Categoria 2</button>
+            <button onclick="filterByCategory('3')">Categoria 3</button>
+            <button onclick="filterByCategory('4')">Categoria 4</button>
+            <button onclick="filterByCategory('5')">Categoria 5</button>
+            <button onclick="showAll()">Mostrar Todos</button>
+        </div>
+    </div>
+
+    <div id="product-details">
+        <h2>Detalhes do Produto</h2>
+        <p><strong>Nome:</strong> <span id="detail-name"></span></p>
+        <p><strong>Preço:</strong> R$ <span id="detail-price"></span></p>
+        <p><strong>Categoria:</strong> <span id="detail-category"></span></p>
+        <p><strong>Origem:</strong> <span id="detail-origin"></span></p>
+        <p><strong>Lote:</strong> <span id="detail-batch"></span></p>
+        <p><strong>Data de Validade:</strong> <span id="detail-expiry"></span></p>
+        <button onclick="hideDetails()">Fechar Detalhes</button>
+    </div>
+
+<script>
+    const form = document.getElementById('product-form');
+    const tableBody = document.querySelector('#product-list tbody');
+    const details = document.getElementById('product-details');
+    const detailName = document.getElementById('detail-name');
+    const detailPrice = document.getElementById('detail-price');
+    const detailCategory = document.getElementById('detail-category');
+    const detailOrigin = document.getElementById('detail-origin');
+    const detailBatch = document.getElementById('detail-batch');
+    const detailExpiry = document.getElementById('detail-expiry');
+
+    let products = [];
+
+    form.addEventListener('submit', (e) => {
+        e.preventDefault();
+
+        const newProduct = {
+            id: Date.now(),
+            name: form.name.value.trim(),
+            price: parseFloat(form.price.value).toFixed(2),
+            category: form.category.value,
+            origin: form.origin.value.trim(),
+            batch: form.batch.value.trim(),
+            expiry: form.expiry.value
+        };
+
+        products.push(newProduct);
+        renderTable(products);
+        form.reset();
+    });
+
+    function renderTable(list) {
+        tableBody.innerHTML = '';
+        if (list.length === 0) {
+            tableBody.innerHTML = '<tr><td colspan="7" style="text-align:center; color: #999;">Nenhum produto encontrado.</td></tr>';
+            return;
+        }
+
+        list.forEach(product => {
+            const tr = document.createElement('tr');
+
+            tr.innerHTML = `
+                <td><a href="#" onclick="showDetails(${product.id})">${product.name}</a></td>
+                <td>R$ ${product.price}</td>
+                <td>${product.category}</td>
+                <td>${product.origin}</td>
+                <td>${product.batch}</td>
+                <td>${product.expiry}</td>
+                <td>
+                    <button class="action-btn edit" onclick="editProduct(${product.id})">Editar</button>
+                    <button class="action-btn" onclick="deleteProduct(${product.id})">Excluir</button>
+                </td>
+            `;
+
+            tableBody.appendChild(tr);
+        });
+    }
+
+    function showDetails(id) {
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        detailName.textContent = product.name;
+        detailPrice.textContent = product.price;
+        detailCategory.textContent = product.category;
+        detailOrigin.textContent = product.origin;
+        detailBatch.textContent = product.batch;
+        detailExpiry.textContent = product.expiry;
+
+        details.style.display = 'block';
+        details.scrollIntoView({ behavior: 'smooth' });
+    }
+
+    function hideDetails() {
+        details.style.display = 'none';
+    }
+
+    function deleteProduct(id) {
+        if (!confirm('Tem certeza que deseja excluir este produto?')) return;
+        products = products.filter(p => p.id !== id);
+        renderTable(products);
+        hideDetails();
+    }
+
+    function editProduct(id) {
+        const product = products.find(p => p.id === id);
+        if (!product) return;
+
+        form.name.value = product.name;
+        form.price.value = product.price;
+        form.category.value = product.category;
+        form.origin.value = product.origin;
+        form.batch.value = product.batch;
+        form.expiry.value = product.expiry;
+
+        deleteProduct(id);
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function filterByCategory(category) {
+        const filtered = products.filter(p => p.category === category);
+        renderTable(filtered);
+        hideDetails();
+    }
+
+    function showAll() {
+        renderTable(products);
+        hideDetails();
+    }
+
+    
+    renderTable(products);
+</script>
+</body>
+</html>
